@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChatGPT 网页中转站</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<!-- booting：主界面与登录层都先藏起来，等 /api/me 回来再决定显示哪个，避免闪一下 -->
+<body class="booting">
+
+<!-- ---------- 登录层 ---------- -->
+<div id="gate" hidden>
+  <div class="gate-card">
+    <h1 class="gate-title">ChatGPT 网页中转站</h1>
+    <p class="gate-sub" id="gateSub">在这里写下的内容，会送进 ChatGPT 项目的对话里。</p>
+
+    <div class="gate-tabs">
+      <button type="button" id="tabLogin" class="tab is-on">登录</button>
+      <button type="button" id="tabRegister" class="tab">注册</button>
+    </div>
+
+    <form id="gateForm" autocomplete="off">
+      <label class="field">
+        <span>账号</span>
+        <input type="text" id="gName" autocomplete="username" maxlength="32" required>
+      </label>
+      <label class="field">
+        <span>密码</span>
+        <input type="password" id="gPass" autocomplete="current-password" required>
+      </label>
+      <label class="field" id="confirmField" hidden>
+        <span>再输一次</span>
+        <input type="password" id="gPass2" autocomplete="new-password">
+      </label>
+
+      <p class="gate-hint" id="gateHint">
+        <span class="hint-login">密码由你自己设定，没有找回通道，别忘了。</span>
+        <span class="hint-register" hidden>账号即身份，不能重复。密码设定后无法找回，请记牢。</span>
+      </p>
+
+      <button type="submit" class="primary gate-submit" id="gateSubmit">登录</button>
+      <p class="gate-err" id="gateErr" hidden></p>
+    </form>
+
+    <p class="gate-status" id="gateStatus"></p>
+  </div>
+</div>
+
+<!-- ---------- 主界面 ---------- -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <span class="sidebar-title">会话</span>
+      <button type="button" id="newSession" class="quiet">+ 新建</button>
+    </div>
+    <nav class="sessions" id="sessions"></nav>
+    <div class="sidebar-foot">
+      <span class="who" id="whoami"></span>
+      <button type="button" id="logout" class="quiet">退出</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="bar">
+      <button type="button" id="menuBtn" class="quiet menu-btn">会话</button>
+      <h1 id="title">ChatGPT 网页中转站</h1>
+      <div class="bar-right">
+        <div class="status" id="status">
+          <span class="dot"></span><span class="status-text"></span>
+        </div>
+        <div class="bell-wrap">
+          <button type="button" id="bell" class="bell" aria-label="通知">
+            <svg viewBox="0 0 20 20" width="17" height="17" fill="none"
+                 stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <rect x="2" y="4.5" width="16" height="11" rx="1.5"/>
+              <path d="M2.5 5.5 10 10.8l7.5-5.3"/>
+            </svg>
+            <span class="badge" id="bellBadge" hidden></span>
+          </button>
+          <div class="notices" id="notices" hidden>
+            <div class="notices-head">维护消息</div>
+            <div class="notices-body" id="noticesBody"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="stream" id="stream">
+      <section class="empty" id="empty">
+        <p class="empty-lead">在这里写下的内容，会送进 ChatGPT 项目的对话里。</p>
+        <p class="empty-hint">每个会话对应 ChatGPT 里的一个独立对话，可以随时回来接着聊。</p>
+      </section>
+
+      <!-- 正在思考的标识。始终留在消息流末尾，见 appendMessages -->
+      <div class="thinking" id="thinking" hidden>
+        <span class="thinking-head">
+          <span class="thinking-dot"></span><span id="thinkingText">正在思考…</span>
+        </span>
+      </div>
+    </main>
+
+    <footer class="composer">
+      <div class="composer-inner">
+        <!-- 待发送的附件。发出去或点 × 移除后自动消失 -->
+        <div class="attach-list" id="attachList" hidden></div>
+
+        <textarea id="input" rows="1" placeholder="写点什么…（Enter 发送，Shift + Enter 换行）"></textarea>
+        <div class="actions">
+          <button type="button" id="attach" class="quiet">＋ 附件</button>
+          <button type="button" id="clear" class="quiet">清空记录</button>
+          <span class="spacer"></span>
+          <button type="button" id="send" class="primary" disabled>发送</button>
+        </div>
+        <!-- 也可以直接把文件拖进页面，或者粘贴截图 -->
+        <input type="file" id="filePick" multiple hidden>
+      </div>
+    </footer>
+  </div>
+
+<!-- 窄屏抽屉的遮罩。position:fixed，不参与 body 的栅格布局。
+     它同时挡住抽屉后面那个还能点的输入区 —— 没有它的话，
+     抽屉开着时点"发送"会把消息发进看不见的会话里。 -->
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>

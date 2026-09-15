@@ -1,0 +1,15 @@
+{
+  "name": "chatgpt-web-relay",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ChatGPT 网页中转站 — 团队共用一套登录态的内网网页中转",
+  "license": "Apache-2.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "playwright": "^1.63.0"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "_说明": [
+    "复制成 config.json 再改：copy config.json.example config.json",
+    "config.json 不会进版本库（.gitignore 里屏蔽了）。",
+    "带下划线的键只是说明，程序不读。",
+    "",
+    "CHATGPT_PROJECT_URL  必填。要使用的 ChatGPT 项目地址，",
+    "                     抄浏览器地址栏里 /project 之前的那一段即可。",
+    "                     所有对话都发生在这个项目的命名空间里，别的项目",
+    "                     和你自己的个人对话一律不碰。",
+    "ADMIN_CONTACT        可选。维护消息面板底部的联系方式，出问题时同事",
+    "                     照这个找人。不填就不显示那一行。",
+    "PORT / HOST          可选。默认 8765 / 0.0.0.0（内网可访问）。",
+    "                     只让本机用就把 HOST 改成 127.0.0.1。",
+    "",
+    "环境变量优先于这个文件，容器或 CI 里用环境变量更方便。"
+  ],
+
+  "CHATGPT_PROJECT_URL": "https://chatgpt.com/g/g-p-xxxxxxxx-我的项目",
+  "ADMIN_CONTACT": ""
+}
